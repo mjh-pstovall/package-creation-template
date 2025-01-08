@@ -35,7 +35,7 @@ jobs:
         run: vstest.console.exe StuffDoer\StuffDoerTests\bin\Release\StuffDoerTests.dll
 
   Second_Job_To_Show_Parallelism:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Testing
         run: echo 'Hello World!'
