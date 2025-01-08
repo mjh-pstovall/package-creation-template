@@ -1,0 +1,44 @@
+name: Publish Package
+
+on:
+  push:
+    tags:
+      # On tag creation, if the format matches whats below
+      # Tags are usually created with a release
+      - v*.*.*
+
+jobs:
+  Build:
+    # If you want to modify something, you need to explicity request those permissions.
+    permissions:
+      packages: write
+
+    runs-on: windows-2019
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      # This action retrieves the version from the tag we created and stores it in an action variable we will use later
+      - name: Get Version
+        id: version
+        uses: dhkatz/get-version-action@v3.0.0
+
+      # In order to publish something to a NuGet feed, first you need to estabalish it as a source in nuget.exe
+      - name: Add Github Source to NuGet
+        run: nuget sources add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ GITHUB.actor }}/index.json" -username "${{ GITHUB.actor }}" -password "${{ secrets.GITHUB_TOKEN }}"
+
+      #
+      - name: Restore
+        run: nuget restore StuffDoer.sln
+
+      - name: Build
+        run: msbuild StuffDoer.sln -t:rebuild -property:Configuration=Release -maxcpucount
+
+      - name: Pack project
+        run: nuget pack StuffDoer\StuffDoer.csproj -OutputDirectory .\output -Version ${{ steps.version.outputs.version-without-v }} -Properties Configuration=Release -IncludeReferencedProjects
+
+      - name: Publish to NuGet
+        run: nuget push .\output\*.nupkg -Source "GitHub" -ApiKey "${{ secrets.GITHUB_TOKEN }}" -SkipDuplicate

@@ -1,0 +1,43 @@
+# What will show up in the GitHub Actions Tab
+name: Build and Test Code
+
+# What Triggers this Job
+on:
+  pull_request:
+    branches: [main]
+
+# Any number of jobs can be specified
+# Jobs all run in parallel to increase speed
+jobs:
+  # Jobs are isolated. Anything done to the code in one job is completely separate from anything else.
+  Build_And_Test:
+    # This is the server image it will run on. There are a few different ones available, windows-2019 is the one
+    # we usually use since .NET Framework requires it. Ubuntu is the cheapest however, so we use that where available.
+    runs-on: windows-2019
+
+    # This is the list of what the job actually does. If you see 'uses' then it is actually an action.
+    # An action is a separate piece of code you can configure to be referenced in workflows.
+    steps:
+      # All jobs need to begin with this if they touch the repo.
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup VSTest
+        uses: darenm/Setup-VSTest@v1.3
+
+      - name: Restore
+        run: nuget restore StuffDoer.sln
+
+      - name: Build
+        run: msbuild StuffDoer.sln -t:rebuild -property:Configuration=Release -maxcpucount
+
+      - name: Test
+        run: vstest.console.exe StuffDoer\StuffDoerTests\bin\Release\StuffDoerTests.dll
+
+  Second_Job_To_Show_Parallelism:
+    runs-on: ubuntu
+    steps:
+      - name: Testing
+        run: echo 'Hello World!'
