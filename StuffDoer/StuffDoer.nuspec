@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>StuffDoer</id>
+    <version>1.0.0</version>
+    <readme>README.md</readme>
+    <authors>Parker Stovall</authors>
+    <projectUrl>https://github.com/mjh-pstovall/package-creation-template/</projectUrl>
+    <description>It Does Stuff! (TM)</description>
+  </metadata>
+  <files>
+    <file src="../README.md" target="" />
+  </files>
+</package>
