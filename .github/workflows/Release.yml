@@ -35,7 +35,7 @@ jobs:
         run: nuget restore StuffDoer.sln
 
       - name: Build
-        run: msbuild StuffDoer.sln -t:rebuild -property:Configuration=Release -maxcpucount
+        run: msbuild StuffDoer\StuffDoer.sln -t:rebuild -property:Configuration=Release -maxcpucount
 
       - name: Pack project
         run: nuget pack StuffDoer\StuffDoer.csproj -OutputDirectory .\output -Version ${{ steps.version.outputs.version-without-v }} -Properties Configuration=Release -IncludeReferencedProjects

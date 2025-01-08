@@ -26,10 +26,10 @@ jobs:
         uses: darenm/Setup-VSTest@v1.3
 
       - name: Restore
-        run: nuget restore StuffDoer.sln
+        run: nuget restore StuffDoer\StuffDoer.sln
 
       - name: Build
-        run: msbuild StuffDoer.sln -t:rebuild -property:Configuration=Release -maxcpucount
+        run: msbuild StuffDoer\StuffDoer.sln -t:rebuild -property:Configuration=Release -maxcpucount
 
       - name: Test
         run: vstest.console.exe StuffDoer\StuffDoerTests\bin\Release\StuffDoerTests.dll
