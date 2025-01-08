@@ -32,7 +32,7 @@ jobs:
         run: msbuild StuffDoer\StuffDoer.sln -t:rebuild -property:Configuration=Release -maxcpucount
 
       - name: Test
-        run: vstest.console.exe StuffDoer\StuffDoerTests\bin\Release\StuffDoerTests.dll
+        run: vstest.console.exe .\StuffDoerTests\bin\Release\StuffDoerTests.dll
 
   Second_Job_To_Show_Parallelism:
     runs-on: ubuntu-latest
