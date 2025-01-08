@@ -2,7 +2,9 @@
 name: Build and Test Code
 
 # What Triggers this Job
-on: [push]
+on: 
+    push:
+        branches: [main]
 
 # Any number of jobs can be specified
 # Jobs all run in parallel to increase speed

@@ -32,7 +32,7 @@ jobs:
 
       #
       - name: Restore
-        run: nuget restore StuffDoer.sln
+        run: nuget restore StuffDoer\StuffDoer.sln
 
       - name: Build
         run: msbuild StuffDoer\StuffDoer.sln -t:rebuild -property:Configuration=Release -maxcpucount
