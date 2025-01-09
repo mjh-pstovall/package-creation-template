@@ -30,15 +30,16 @@ jobs:
       - name: Add Github Source to NuGet
         run: nuget sources add -Name "GitHub" -Source "https://nuget.pkg.github.com/${{ GITHUB.actor }}/index.json" -username "${{ GITHUB.actor }}" -password "${{ secrets.GITHUB_TOKEN }}"
 
-      #
       - name: Restore
         run: nuget restore StuffDoer\StuffDoer.sln
 
       - name: Build
         run: msbuild StuffDoer\StuffDoer.sln -t:rebuild -property:Configuration=Release -maxcpucount
 
+      # Creates the .nupkg file from our stuff doer
       - name: Pack project
         run: nuget pack StuffDoer\StuffDoer.csproj -OutputDirectory .\output -Version ${{ steps.version.outputs.version-without-v }} -Properties Configuration=Release -IncludeReferencedProjects
 
+      # Pushes the nupkg file to our personal nuget feed
       - name: Publish to NuGet
         run: nuget push .\output\*.nupkg -Source "GitHub" -ApiKey "${{ secrets.GITHUB_TOKEN }}" -SkipDuplicate
