@@ -12,8 +12,7 @@ namespace StuffDoerTests
         {
             var stuffDoer = new StuffDoer();
             var stuff = stuffDoer.DoStuff();
-            // Assert.AreEqual(stuff, "Stuff Has Been Done!");
-            Assert.IsNotNull(null);
+            Assert.AreEqual(stuff, "Stuff Has Been Done!");
         }
     }
 }
